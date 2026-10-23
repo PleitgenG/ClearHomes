@@ -1,0 +1,37 @@
+name: Build APK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      # Works whether you uploaded the project folder or just ClearHome.zip
+      - name: Locate project
+        run: |
+          if [ -f ClearHome.zip ]; then unzip -q -o ClearHome.zip -d proj; fi
+          SETTINGS=$(find . -name settings.gradle -not -path './.git/*' | head -n 1)
+          if [ -z "$SETTINGS" ]; then echo "settings.gradle not found"; exit 1; fi
+          echo "ROOT=$(dirname "$SETTINGS")" >> "$GITHUB_ENV"
+
+      - name: Build debug APK
+        working-directory: ${{ env.ROOT }}
+        run: gradle assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ClearHome-apk
+          path: ${{ env.ROOT }}/app/build/outputs/apk/debug/app-debug.apk
