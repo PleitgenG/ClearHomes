@@ -1,37 +1,5 @@
+
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-}
-
-android {
-    namespace 'com.pleit.clearhome'
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.pleit.clearhome"
-        minSdk 21          // Android 6 (API 23) and up is covered
-        targetSdk 28
-        versionCode 1
-        versionName "1.0"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-}
-
-dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'androidx.core:core-ktx:1.13.1'
+    id 'com.android.application' version '8.5.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
 }
